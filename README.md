@@ -12,11 +12,11 @@ An API interface for publishing data to Knack from the Enterprise Service Bus (E
 
 ```
 sudo docker run -d \
-    -p 5000:5000 \
+    -p 5002:5002 \
     -e LANG=C.UTF-8 \
     -v "$(pwd)":/app/ \
     --rm \
     flask-restful
 ```
 
-5. Visit the app at `http://[Your host IP]:5000`
+5. Visit the app at `http://[Your host IP]:5002`

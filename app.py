@@ -72,4 +72,7 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
 api.add_resource(Record, '/objects/<string:obj_key>/records')
 
 if __name__ == '__main__':
-    app.run(debug=False,host='0.0.0.0',port=5002)
+    # app.run(debug=True,host='0.0.0.0',port=5002, ssl_context=('cert.pem', 'key.pem'))
+    app.run(debug=True,host='0.0.0.0',port=5002)
+
+
