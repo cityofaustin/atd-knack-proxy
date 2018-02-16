@@ -9,6 +9,7 @@ See: https://www.knack.com/developer-documentation/#the-api
 import datetime
 import logging
 from logging.handlers import RotatingFileHandler
+import json
 import pdb
 
 from flask import Flask, request
@@ -32,10 +33,11 @@ class Record(Resource):
     def put(self, obj_key):
         app.logger.info(str(datetime.datetime.now()))
         app.logger.info(request.url)
-
-        data = request.form
+        
+        data = request.get_json()
+        app.logger.info(request.is_json)
+        
         app.logger.info(data)
-
         args = parser.parse_args()
         app.logger.info(args)
 
