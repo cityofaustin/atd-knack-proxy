@@ -1,4 +1,4 @@
-#  knack-legit
+#  knack-proxy
 
 A legacy-friendly interface for publishing data to [Knack](http://knack.com) applications.
 
@@ -6,7 +6,7 @@ A legacy-friendly interface for publishing data to [Knack](http://knack.com) app
 
 Some legacy systems don't integrate well with "modern" applications. Legacy systems might require a self-signed SSL certificate or a static IP address in order to communicate with others. They may even require your downstream application to be on the same network!
 
-Knack-legit cures these headaches by acting as a legit intermediary between fussy legacy systems and Knack. Your legacy system will never know the difference!
+Knack-proxy cures these headaches by acting as an intermediary between fussy legacy systems and Knack. Your legacy system will never know the difference!
 
 ##  Quick Start
 
@@ -14,7 +14,7 @@ Knack-legit cures these headaches by acting as a legit intermediary between fuss
 
 2. Build the Docker image: `docker build -t flask-restful .`.
 
-3. Clone this repo to your host and `cd` into it: `git clone http://github.com/cityofaustin/cctv-serivce && cd knack-legacy`.
+3. Clone this repo to your host and `cd` into it: `git clone http://github.com/cityofaustin/cctv-serivce && cd knack-proxy`.
 
 4. Configure `secrets.py` with your Flask app's [secret key](http://flask.pocoo.org/docs/0.12/quickstart/#sessions).
 
@@ -31,7 +31,7 @@ sudo docker run -d \
     flask-restful
 ```
 
-7. PUT records to `http://[Your host IP]:5002/objects/{ your_object_key }/records`
+7. PUT records to `http://[Your host IP]:5002/v1/objects/{ your_object_key }/records`
 
 ## License
 

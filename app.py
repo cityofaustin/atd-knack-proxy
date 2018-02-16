@@ -61,7 +61,7 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
     '''
     Submit a POST request to create a Knack record
     '''
-    headers['Content-type'] = 'application/json' #  require by knack like so
+    headers['Content-type'] = 'application/json' #  required by knack like so
     endpoint = 'https://api.knack.com/v1/objects/{}/records'.format(obj_key)
 
     attempts = 0
@@ -91,7 +91,7 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
     return res
 
 
-api.add_resource(Record, '/objects/<string:obj_key>/records')
+api.add_resource(Record, '/v1/objects/<string:obj_key>/records')
 
 
 if __name__ == '__main__':
