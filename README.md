@@ -6,7 +6,7 @@ A legacy-friendly interface for publishing data to [Knack](http://knack.com) app
 
 Some legacy systems don't integrate well with "modern" applications. Legacy systems might require a self-signed SSL certificate or a static IP address in order to communicate with others. They may even require your downstream application to be on the same network!
 
-Knack-legit cures these headaches by acting as a legit intermediary between fussy legacy systems and Knack. It is intended to be launched locally, where it can pass requests from your legacy system to Knack. Your legacy system will never know the difference!
+Knack-legit cures these headaches by acting as a legit intermediary between fussy legacy systems and Knack. Your legacy system will never know the difference!
 
 ##  Quick Start
 
