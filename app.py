@@ -42,7 +42,7 @@ class Record(Resource):
         app.logger.info(args)
 
         res = create_record(data, obj_key, args)
-        return res.text
+        return res.json()
 
 
 def handle_response(res):
