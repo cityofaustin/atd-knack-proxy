@@ -3,7 +3,7 @@ A Restful API interface to the Knack API
 Because sometimes legacy applications require goofy shit like this
 
 See: https://www.knack.com/developer-documentation/#the-api
-!!! Only supports record create (PUT)
+!!! Only supports record create (POST)
 
 '''
 import datetime
@@ -30,7 +30,7 @@ class Record(Resource):
     '''
     Define REST endpoint
     '''
-    def put(self, obj_key):
+    def post(self, obj_key):
         app.logger.info(str(datetime.datetime.now()))
         app.logger.info(request.url)
         
@@ -59,7 +59,7 @@ def handle_response(res):
 
 def create_record(payload, obj_key, headers, max_attempts=5, timeout=10): 
     '''
-    Submit a PUT request to create a Knack record
+    Submit a POST request to create a Knack record
     '''
     headers['Content-type'] = 'application/json' #  require by knack like so
     endpoint = 'https://api.knack.com/v1/objects/{}/records'.format(obj_key)
