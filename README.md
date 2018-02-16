@@ -12,9 +12,9 @@ Although the ESB can integrate with Knack, the ESB requires static SSL certifica
 
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine `systemctl start docker`.
 
-2. Clone this repo and on your host and `cd` into the repo: `git clone http://github.com/cityofaustin/cctv-serivce && cd cctv-serivce`.
+2. Clone this repo on your host and `cd` into the repo: `git clone http://github.com/cityofaustin/cctv-serivce && cd cctv-serivce`.
 
-3. Configure `secrets.py` with your Flask app's secret key, as well as your Knack app credentials
+3. Configure `secrets.py` with your Flask app's secret key and your Knack app credentials
 
 4. (Optional) Create self-signed certs (clients will need `key.pem`):  `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
 
@@ -35,7 +35,7 @@ sudo docker run -d \
 
 ## Tests
 
-1. Configure `secrets.py` with your Flask app's secret key, as well as your Knack app credentials
+1. Configure `secrets.py` with your Flask app's secret key and your Knack app credentials
 
 2. Update `test.py` with your application's object_key and appropriate record.
 
