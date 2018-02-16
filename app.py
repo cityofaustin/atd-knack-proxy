@@ -6,9 +6,13 @@ See: https://www.knack.com/developer-documentation/#the-api
 !!! Only supports record create (PUT)
 
 '''
+import datetime
+import logging
+from logging.handlers import RotatingFileHandler
+import pdb
+
 from flask import Flask, request
 from flask_restful import Resource, Api, abort, reqparse
-import pdb
 import requests
 from secrets import SECRET_KEY
 
@@ -26,8 +30,15 @@ class Record(Resource):
     Define REST endpoint
     '''
     def put(self, obj_key):
+        app.logger.info(str(datetime.datetime.now()))
+        app.logger.info(request.url)
+
         data = request.form
+        app.logger.info(data)
+
         args = parser.parse_args()
+        app.logger.info(args)
+
         res = create_record(data, obj_key, args)
         return res.text
 
@@ -39,6 +50,8 @@ def handle_response(res):
     if res.status_code == 200:
         return res
     else:
+        app.logger.info(res.status_code)
+        app.logger.info(res.text)
         abort(res.status_code, message=res.text)
 
 
@@ -80,6 +93,9 @@ api.add_resource(Record, '/objects/<string:obj_key>/records')
 
 
 if __name__ == '__main__':
+    handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
     # SSL Support
     # app.run(debug=False,host='0.0.0.0',port=5002, ssl_context=('cert.pem', 'key.pem'))
     app.run(debug=True,host='0.0.0.0',port=5002)

@@ -26,13 +26,17 @@ headers = {
 }
 
 res = requests.put(
-    insert_endpoint,
+    endpoint,
     headers=headers,
-    data=record_dict,
+    data=record,
     # verify='cert.pem' #  for ssl, must specify an https endpoint and deploy certs on webserver 
 )
 
-res.raise_for_stats()
-
 print(res.json())
+
+
+
+
+
+
 
