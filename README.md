@@ -25,7 +25,7 @@ Knack-proxy cures these headaches by acting as an intermediary between fussy leg
 7. You'll launch two Nginx containers:
 
 HTTP (port 80)
-```
+```bash
 docker run -it --name my-nginx \
     -d \
     --rm \
@@ -35,7 +35,7 @@ docker run -it --name my-nginx \
 ```
 
 HTTPS (port 443):
-```
+```bash
 docker run -it --name my-nginx \
     -d \
     --rm \
@@ -46,7 +46,7 @@ docker run -it --name my-nginx \
 
 8. Run Gunicorn + Flask container to launch the Knack-Proxy app. Note how we've given our app container a static IP so the Nginx can pass requests to it:
 
-```
+```bash
 docker run -it --name my-flask \
     -d \
     --rm \
