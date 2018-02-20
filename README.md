@@ -12,26 +12,60 @@ Knack-proxy cures these headaches by acting as an intermediary between fussy leg
 
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine on your host: `systemctl start docker`.
 
-2. Build the Docker image: `docker build -t flask-restful .`.
+2. Build the Nginx Docker image: `docker build -t nginx-custom -f Dockerfile-nginx .`.
 
-3. Clone this repo to your host and `cd` into it: `git clone http://github.com/cityofaustin/cctv-serivce && cd knack-proxy`.
+3. Build the Gunicorn + Flask Docker image: `docker build -t flask-restful -f Dockerfile-flask-restful  .`.
 
-4. Configure `secrets.py` with your Flask app's [secret key](http://flask.pocoo.org/docs/0.12/quickstart/#sessions).
+4. Create a docker [bridge network](https://docs.docker.com/network/network-tutorial-standalone/): `docker network create --subnet=172.18.0.0/16 my-net`.
 
-5. (Optionally) deposit SSL certificates in the root directory and provide `key.pem` to your client:  `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
+5. Clone this repo to your host and `cd` into it: `git clone http://github.com/cityofaustin/knack-proxy && cd knack-proxy`.
 
-6. Launch the container/app: 
+6. Generate SSL certificates in the root directory:  `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
+
+7. You'll launch two Nginx containers:
+
+HTTP (port 80)
+```
+docker run -it --name my-nginx \
+    -d \
+    --rm \
+    --network my-net \
+    -p 80:80 \
+    -v "$(pwd)":/app/ nginx-custom
+```
+
+HTTPS (port 443):
+```
+docker run -it --name my-nginx \
+    -d \
+    --rm \
+    --network my-net \
+    -p 443:443 \
+    -v "$(pwd)":/app/ nginx-custom
+```
+
+8. Run Gunicorn + Flask container to launch the Knack-Proxy app. Note how we've given our app container a static IP so the Nginx can pass requests to it:
 
 ```
-sudo docker run -d \
-    -p 5002:5002 \
-    -e LANG=C.UTF-8 \
-    -v "$(pwd)":/app/ \
+docker run -it --name my-flask \
+    -d \
     --rm \
+    --network my-net \
+    --ip 172.18.0.22 \
+    -v "$(pwd)":/app/ \
     flask-restful
 ```
 
-7. PUT records to `http://[Your host IP]:5002/v1/objects/{ your_object_key }/records`
+9. Verify your three containers are running: `docker ps`.
+
+```
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+418f0a2ab0fe        flask-restful       "python /usr/local..."   15 minutes ago      Up 15 minutes                              my-flask
+b1a4884efb9f        nginx-custom        "nginx -g 'daemon ..."   16 minutes ago      Up 16 minutes       0.0.0.0:443->443/tcp   my-nginx-ssl
+e8d45397fea2        nginx-custom        "nginx -g 'daemon ..."   27 minutes ago      Up 27 minutes       0.0.0.0:80->80/tcp     my-nginx
+```
+
+10. You're all set! POST Knack records to `http://[Your host IP]/v1/objects/{ your_object_key }/records`
 
 ## License
 
