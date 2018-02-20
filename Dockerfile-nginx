@@ -1,0 +1,18 @@
+FROM ubuntu:16.04
+
+#  Install nginx
+RUN apt-get update
+RUN apt-get -y install nginx
+
+#  Set the working directory
+WORKDIR /app/
+
+#  Copy nginx app site config
+COPY app /app/
+
+#  Copy site config
+RUN rm /etc/nginx/sites-enabled/default
+RUN cp app /etc/nginx/sites-available/
+RUN ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app
+
+CMD ["nginx", "-g", "daemon off;"]
