@@ -1,10 +1,7 @@
 '''
-A Restful API interface to the Knack API
-Because sometimes legacy applications require goofy shit like this
+Restful API interface to the Knack API
 
 See: https://www.knack.com/developer-documentation/#the-api
-!!! Only supports record create (POST)
-
 '''
 import datetime
 import logging
@@ -15,12 +12,10 @@ import pdb
 from flask import Flask, request
 from flask_restful import Resource, Api, abort, reqparse
 import requests
-from secrets import SECRET_KEY
 
 app = Flask(__name__)
 api = Api(app)
 
-app.secret_key = SECRET_KEY
 parser = reqparse.RequestParser()
 parser.add_argument('x-knack-application-id', location='headers')
 parser.add_argument('x-knack-rest-api-key', location='headers')
@@ -98,8 +93,6 @@ if __name__ == '__main__':
     handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
-    # SSL Support
-    # app.run(debug=False,host='0.0.0.0',port=5002, ssl_context=('cert.pem', 'key.pem'))
-    app.run(debug=True,host='0.0.0.0',port=5002)
+    app.run(debug=True)
 
 

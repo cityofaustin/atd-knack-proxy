@@ -1,7 +1,10 @@
 *.pyc
 .DS_Store
 __pycache__
+notes.sh
 secrets.py
 *.sh
 *.pem
 *.log
+/static
+*TEST*
