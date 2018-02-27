@@ -12,9 +12,9 @@ Knack-proxy cures these headaches by acting as an intermediary between fussy leg
 
 1. Install [Docker](https://docs.docker.com/) and launch the Docker engine on your host: `systemctl start docker`.
 
-2. Build the Nginx Docker image: `docker build -t nginx-custom -f Dockerfile-nginx .`.
+2. Build the Nginx Docker image: `docker build -t atddocker/knack-proxy-nginx -f Dockerfile-knack-proxy-nginx .`.
 
-3. Build the Gunicorn + Flask Docker image: `docker build -t flask-restful -f Dockerfile-flask-restful  .`.
+3. Build the Gunicorn + Flask Docker image: `docker build -t atddocker/knack-proxy-flask -f Dockerfile-knack-proxy-flask  .`.
 
 4. Create a docker [bridge network](https://docs.docker.com/network/network-tutorial-standalone/): `docker network create --subnet=172.18.0.0/16 my-net`.
 
@@ -26,34 +26,34 @@ Knack-proxy cures these headaches by acting as an intermediary between fussy leg
 
 HTTP (port 80)
 ```bash
-docker run -it --name my-nginx \
+docker run -it --name nginx-80 \
     -d \
     --rm \
     --network my-net \
     -p 80:80 \
-    -v "$(pwd)":/app/ nginx-custom
+    -v "$(pwd)":/app/ atddocker/knack-proxy-nginx
 ```
 
 HTTPS (port 443):
 ```bash
-docker run -it --name my-nginx \
+docker run -it --name nginx-443 \
     -d \
     --rm \
     --network my-net \
     -p 443:443 \
-    -v "$(pwd)":/app/ nginx-custom
+    -v "$(pwd)":/app/ atddocker/knack-proxy-nginx
 ```
 
 8. Run Gunicorn + Flask container to launch the Knack-Proxy app. Note how we've given our app container a static IP so the Nginx can pass requests to it:
 
 ```bash
-docker run -it --name my-flask \
+docker run -it --name knack-proxy-flask \
     -d \
     --rm \
     --network my-net \
     --ip 172.18.0.22 \
     -v "$(pwd)":/app/ \
-    flask-restful
+    atddocker/knack-proxy-flask
 ```
 
 9. Verify your three containers are running: `docker ps`.
