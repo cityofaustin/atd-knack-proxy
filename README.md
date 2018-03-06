@@ -16,13 +16,15 @@ Knack-proxy cures these headaches by acting as an intermediary between fussy leg
 
 3. Build the Gunicorn + Flask Docker image: `docker build -t atddocker/knack-proxy-flask -f Dockerfile-knack-proxy-flask  .`.
 
-4. Create a docker [bridge network](https://docs.docker.com/network/network-tutorial-standalone/): `docker network create --subnet=172.18.0.0/16 my-net`.
+4. Create a log directory on your host: `mkdir /var/log/nginx`
 
-5. Clone this repo to your host and `cd` into it: `git clone http://github.com/cityofaustin/knack-proxy && cd knack-proxy`.
+5. Create a docker [bridge network](https://docs.docker.com/network/network-tutorial-standalone/): `docker network create --subnet=172.18.0.0/16 my-net`.
 
-6. Generate SSL certificates in the root directory:  `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
+6. Clone this repo to your host and `cd` into it: `git clone http://github.com/cityofaustin/knack-proxy && cd knack-proxy`.
 
-7. You'll launch two Nginx containers:
+7. Generate SSL certificates in the root directory:  `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
+
+8. You'll launch two Nginx containers:
 
 HTTP (port 80)
 ```bash
@@ -44,7 +46,7 @@ docker run -it --name nginx-443 \
     -v "$(pwd)":/app/ atddocker/knack-proxy-nginx
 ```
 
-8. Run Gunicorn + Flask container to launch the Knack-Proxy app. Note how we've given our app container a static IP so the Nginx can pass requests to it:
+9. Run Gunicorn + Flask container to launch the Knack-Proxy app. Note how we've given our app container a static IP so the Nginx can pass requests to it:
 
 ```bash
 docker run -it --name knack-proxy-flask \
@@ -56,7 +58,7 @@ docker run -it --name knack-proxy-flask \
     atddocker/knack-proxy-flask
 ```
 
-9. Verify your three containers are running: `docker ps`.
+10. Verify your three containers are running: `docker ps`.
 
 ```
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
@@ -65,7 +67,7 @@ b1a4884efb9f        nginx-custom        "nginx -g 'daemon ..."   16 minutes ago 
 e8d45397fea2        nginx-custom        "nginx -g 'daemon ..."   27 minutes ago      Up 27 minutes       0.0.0.0:80->80/tcp     my-nginx
 ```
 
-10. You're all set! POST Knack records to `http://[Your host IP]/v1/objects/{ your_object_key }/records`
+11. You're all set! POST Knack records to `http://[Your host IP]/v1/objects/{ your_object_key }/records`
 
 ## License
 
