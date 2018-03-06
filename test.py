@@ -13,8 +13,9 @@ api_key = KNACK_CREDS['test']['api_key']
 obj_key = 'object_83'
 
 endpoint = f'http://localhost/v1/objects/{obj_key}/records'
-endpoint = f'https://{SERVER_IP}/v1/objects/{obj_key}/records'
 endpoint = f'https://atdatmsscript/v1/objects/{obj_key}/records'
+
+>>>>>>> Stashed changes
 pdb.set_trace()
 #  match your object's schema
 record = { "field_1447":"2018-000000000000046888", "field_1448":"430978528", "field_1232":"44-99924972"}
