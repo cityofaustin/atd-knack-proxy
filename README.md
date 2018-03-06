@@ -33,6 +33,7 @@ docker run -it --name nginx-80 \
     --rm \
     --network my-net \
     -p 80:80 \
+    -v /var/log/nginx:/var/log/nginx \
     -v "$(pwd)":/app/ atddocker/knack-proxy-nginx
 ```
 
@@ -43,6 +44,7 @@ docker run -it --name nginx-443 \
     --rm \
     --network my-net \
     -p 443:443 \
+    -v /var/log/nginx:/var/log/nginx \
     -v "$(pwd)":/app/ atddocker/knack-proxy-nginx
 ```
 
