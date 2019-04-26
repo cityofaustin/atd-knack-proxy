@@ -24,18 +24,7 @@ Knack-proxy cures these headaches by acting as an intermediary between fussy leg
 
 7. Generate SSL certificates in the root directory:  `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
 
-8. You'll launch two Nginx containers:
-
-HTTP (port 80)
-```bash
-docker run -it --name nginx-80 \
-    -d \
-    --rm \
-    --network my-net \
-    -p 80:80 \
-    -v /var/log/nginx:/var/log/nginx \
-    -v "$(pwd)":/app/ atddocker/knack-proxy-nginx
-```
+8. You'll launch an Nginx container:
 
 HTTPS (port 443):
 ```bash
