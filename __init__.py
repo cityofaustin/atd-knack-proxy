@@ -1,8 +1,8 @@
-'''
+"""
 Restful API interface to the Knack API
 
 See: https://www.knack.com/developer-documentation/#the-api
-'''
+"""
 import datetime
 import logging
 from logging.handlers import RotatingFileHandler
@@ -17,21 +17,22 @@ app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
-parser.add_argument('x-knack-application-id', location='headers')
-parser.add_argument('x-knack-rest-api-key', location='headers')
+parser.add_argument("x-knack-application-id", location="headers")
+parser.add_argument("x-knack-rest-api-key", location="headers")
 
 
 class Record(Resource):
-    '''
+    """
     Define REST endpoint
-    '''
+    """
+
     def post(self, obj_key):
         app.logger.info(str(datetime.datetime.now()))
         app.logger.info(request.url)
-        
+
         data = request.get_json()
         app.logger.info(request.is_json)
-        
+
         app.logger.info(data)
         args = parser.parse_args()
         app.logger.info(args)
@@ -41,9 +42,9 @@ class Record(Resource):
 
 
 def handle_response(res):
-    '''
+    """
     Check Knack API response for errors and abort request as needed
-    '''
+    """
     if res.status_code == 200:
         return res
     else:
@@ -52,27 +53,24 @@ def handle_response(res):
         abort(res.status_code, message=res.text)
 
 
-def create_record(payload, obj_key, headers, max_attempts=5, timeout=10): 
-    '''
+def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
+    """
     Submit a POST request to create a Knack record
-    '''
-    headers['Content-type'] = 'application/json' #  required by knack like so
-    endpoint = 'https://api.knack.com/v1/objects/{}/records'.format(obj_key)
+    """
+    headers["Content-type"] = "application/json"  #  required by knack like so
+    endpoint = "https://api.knack.com/v1/objects/{}/records".format(obj_key)
 
     attempts = 0
 
     while attempts < max_attempts:
-        
+
         attempts += 1
 
         try:
             res = requests.post(
-                endpoint,
-                headers=headers,
-                json=payload,
-                timeout=timeout
+                endpoint, headers=headers, json=payload, timeout=timeout
             )
-            
+
             break
 
         except requests.exceptions.Timeout as e:
@@ -86,13 +84,11 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
     return res
 
 
-api.add_resource(Record, '/v1/objects/<string:obj_key>/records')
+api.add_resource(Record, "/v1/objects/<string:obj_key>/records")
 
 
-if __name__ == '__main__':
-    handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
+if __name__ == "__main__":
+    handler = RotatingFileHandler("log/app.log", maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
     app.run(debug=True)
-
-
