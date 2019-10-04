@@ -7,6 +7,7 @@ import datetime
 import logging
 from logging.handlers import RotatingFileHandler
 import json
+import random
 import time
 import pdb
 
@@ -21,16 +22,24 @@ parser = reqparse.RequestParser()
 parser.add_argument('x-knack-application-id', location='headers')
 parser.add_argument('x-knack-rest-api-key', location='headers')
 
+handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
+ 
+def randrange_float(start, stop, step):
+    # return a random float within range (start, stop) at the defined step
+    return random.randint(0, int((stop - start) / step)) * step + start
 
 class Record(Resource):
     '''
     Define REST endpoint
     '''
-    def post(self, obj_key, throttle=1):
+    def post(self, obj_key, max_throttle=8):
         
-        # sleep between requests. we're trying to be gentle w/
-        # kanck's servers
-        time.sleep(1)
+        # sleep between requests. we're trying to be gentle w/ kanck's servers
+        # this throttles a random # seconds between 1 and max_throttle in .25 second intervals
+        # throttle = randrange_float(1, 8, .25)
+        # time.sleep(throttle)
 
         app.logger.info(str(datetime.datetime.now()))
         app.logger.info(request.url)
@@ -96,9 +105,4 @@ api.add_resource(Record, '/v1/objects/<string:obj_key>/records')
 
 
 if __name__ == '__main__':
-    handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(logging.INFO)
-    app.logger.addHandler(handler)
     app.run(debug=True)
-
-
