@@ -22,49 +22,24 @@ parser = reqparse.RequestParser()
 parser.add_argument('x-knack-application-id', location='headers')
 parser.add_argument('x-knack-rest-api-key', location='headers')
 
-handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
-handler.setLevel(logging.INFO)
-app.logger.addHandler(handler)
- 
+
+    
 def randrange_float(start, stop, step):
     # return a random float within range (start, stop) at the defined step
     return random.randint(0, int((stop - start) / step)) * step + start
 
+
 class Record(Resource):
     '''
-    Define REST endpoint
+    Define POST endpoint
     '''
     def post(self, obj_key, max_throttle=8):
-        
-        # sleep between requests. we're trying to be gentle w/ kanck's servers
-        # this throttles a random # seconds between 1 and max_throttle in .25 second intervals
-        # throttle = randrange_float(1, 8, .25)
-        # time.sleep(throttle)
-
-        app.logger.info(str(datetime.datetime.now()))
-        app.logger.info(request.url)
-        
         data = request.get_json()
-        app.logger.info(request.is_json)
         
-        app.logger.info(data)
         args = parser.parse_args()
-        app.logger.info(args)
 
         res = create_record(data, obj_key, args)
         return res.json()
-
-
-def handle_response(res):
-    '''
-    Check Knack API response for errors and abort request as needed
-    '''
-    if res.status_code == 200:
-        return res
-    else:
-        app.logger.info(res.status_code)
-        app.logger.info(res.text)
-        abort(res.status_code, message=res.text)
 
 
 def create_record(payload, obj_key, headers, max_attempts=5, timeout=10): 
@@ -87,8 +62,20 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
                 json=payload,
                 timeout=timeout
             )
+
+            if res.status_code == 200:
+                break
             
-            break
+            elif res.status_code == 502:
+                # 502 errors are common with Knack API
+                # so try again until max attempts reached
+                if attempts < max_attempts:     
+                    continue
+                else:
+                    abort(res.status_code, message=res.text)
+
+            else:
+                abort(res.status_code, message=res.text)
 
         except requests.exceptions.Timeout as e:
 
@@ -97,7 +84,6 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
             else:
                 raise e
 
-    handle_response(res)
     return res
 
 
@@ -106,3 +92,6 @@ api.add_resource(Record, '/v1/objects/<string:obj_key>/records')
 
 if __name__ == '__main__':
     app.run(debug=True)
+    handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
