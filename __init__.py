@@ -7,7 +7,6 @@ import datetime
 import logging
 from logging.handlers import RotatingFileHandler
 import json
-import random
 import time
 import pdb
 
@@ -21,12 +20,6 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('x-knack-application-id', location='headers')
 parser.add_argument('x-knack-rest-api-key', location='headers')
-
-
-    
-def randrange_float(start, stop, step):
-    # return a random float within range (start, stop) at the defined step
-    return random.randint(0, int((stop - start) / step)) * step + start
 
 
 class Record(Resource):
@@ -69,7 +62,9 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
             elif res.status_code == 502:
                 # 502 errors are common with Knack API
                 # so try again until max attempts reached
-                if attempts < max_attempts:     
+                if attempts < max_attempts:
+                    # wait a sec to give the API a break
+                    time.sleep(1)
                     continue
                 else:
                     abort(res.status_code, message=res.text)
@@ -95,3 +90,9 @@ if __name__ == '__main__':
     handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
+
+
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger(‘gunicorn.error’)
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
