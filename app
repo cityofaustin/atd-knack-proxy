@@ -12,7 +12,7 @@ server {
         alias  /app/static/;
     }
 
-    error_page 502 /502_custom.html;
+    error_page 502 404 /502_custom.html;
         location = /custom_502.html {
                 root /usr/share/nginx/html;
                 internal;
