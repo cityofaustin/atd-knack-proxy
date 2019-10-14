@@ -1,0 +1,9 @@
+{
+    "production": {
+        "app_function": "__init__.app",
+        "profile_name": null,
+        "project_name": "atd-knack-proxy",
+        "runtime": "python3.7",
+        "s3_bucket": "atd-knack-proxy-prod"
+    }
+}
