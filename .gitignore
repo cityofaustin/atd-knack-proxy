@@ -8,3 +8,6 @@ secrets.py
 *.log
 /static
 *TEST*
+
+/venv
+/.idea
