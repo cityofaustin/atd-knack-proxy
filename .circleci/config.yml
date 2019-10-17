@@ -1,6 +1,5 @@
 #
 # Knack-Proxy CircleCI Build script
-# Austin Transportation Department
 #
 version: 2
 jobs:
@@ -17,6 +16,6 @@ jobs:
       - run:
           name: "Deploying to AWS Lambda"
           command: |
-            source .circleci/aws-helper.sh
+            source ~/.circleci/aws-helper.sh
             pip install -r requirements.txt
             deploy_aws_lambda
