@@ -17,6 +17,6 @@ elif [[ "${CIRCLE_BRANCH}" == "master" ]]; then
 fi;
 
 function deploy_aws_lambda {
-    echo "Updating AWS Lambda"
+    echo "Updating AWS Lambda Environment: ${ATD_AWS_LAMBDA_ENV}";
     zappa update $ATD_AWS_LAMBDA_ENV;
 }
