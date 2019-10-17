@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export ATD_IMAGE="atddocker/atd-cris-capybara";
-
 #
 # By default we are going to assume the current branch will be deployed to the dev server
 #
