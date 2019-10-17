@@ -43,4 +43,5 @@ jobs:
           name: Deploy
           command: |
             source .circleci/aws-helper.sh
+            source venv/bin/activate
             deploy_aws_lambda
