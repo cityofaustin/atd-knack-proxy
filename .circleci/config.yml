@@ -16,7 +16,6 @@ jobs:
       - run:
           name: "Deploying to AWS Lambda"
           command: |
-            cd ~/project
-            source .circleci/aws-helper.sh
-            pip install -r requirements.txt
-            deploy_aws_lambda
+            source ~/project/.circleci/aws-helper.sh
+            pip install -r ~/project/requirements.txt
+            cd ~/project && deploy_aws_lambda
