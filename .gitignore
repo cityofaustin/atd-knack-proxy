@@ -4,7 +4,11 @@ __pycache__
 notes.sh
 secrets.py
 *.sh
+!.circleci/aws-helper.sh
 *.pem
 *.log
 /static
 *TEST*
+
+/venv
+/.idea

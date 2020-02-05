@@ -4,10 +4,6 @@ Restful API interface to the Knack API
 See: https://www.knack.com/developer-documentation/#the-api
 '''
 import datetime
-import logging
-from logging.handlers import RotatingFileHandler
-import json
-import pdb
 
 from flask import Flask, request
 from flask_restful import Resource, Api, abort, reqparse
@@ -88,11 +84,13 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=10):
 
 api.add_resource(Record, '/v1/objects/<string:obj_key>/records')
 
+@app.route('/')
+def health_check():
+    now = datetime.datetime.now()
+    return "Knack Proxy - Health Check - Available @ %s" % now.strftime("%Y-%m-%d %H:%M:%S"), 200
+
 
 if __name__ == '__main__':
-    handler = RotatingFileHandler('log/app.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(logging.INFO)
-    app.logger.addHandler(handler)
     app.run(debug=True)
 
 
