@@ -4,26 +4,17 @@
         "profile_name": null,
         "project_name": "atd-knack-proxy",
         "runtime": "python3.7",
-        "s3_bucket": "atd-knack-proxy-prod",
-        "domain": "knack-proxy.austintexas.io",
-        "certificate_arn": "arn:aws:acm:us-east-1:445025639710:certificate/dcfce70b-1086-487f-a327-facb70a62bfa"
+        "s3_bucket": "atd-knack-proxy",
+        "domain": "knack-proxy.austinmobility.io",
+        "certificate_arn": "arn:aws:acm:us-east-1:295525487728:certificate/a93ebfd6-fed8-420e-99b4-d989667c699b"
     },
     "staging": {
         "app_function": "__init__.app",
         "profile_name": null,
-        "project_name": "atd-knack-proxy-staging",
+        "project_name": "atd-knack-proxy",
         "runtime": "python3.7",
-        "s3_bucket": "atd-knack-proxy-dev",
-        "domain": "knack-proxy-staging.austintexas.io",
-        "certificate_arn": "arn:aws:acm:us-east-1:445025639710:certificate/dcfce70b-1086-487f-a327-facb70a62bfa"
-    },
-    "dev": {
-        "app_function": "__init__.app",
-        "profile_name": null,
-        "project_name": "atd-knack-proxy-dev",
-        "runtime": "python3.7",
-        "s3_bucket": "atd-knack-proxy-dev",
-        "domain": "knack-proxy-dev.austintexas.io",
-        "certificate_arn": "arn:aws:acm:us-east-1:445025639710:certificate/dcfce70b-1086-487f-a327-facb70a62bfa"
+        "s3_bucket": "atd-knack-proxy",
+        "domain": "knack-proxy-staging.austinmobility.io",
+        "certificate_arn": "arn:aws:acm:us-east-1:295525487728:certificate/83e8a2f1-bad3-432b-886c-98d8938cd3b0"
     }
 }
