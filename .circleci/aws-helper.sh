@@ -12,8 +12,6 @@ if [[ "${CIRCLE_BRANCH}" == "production" ]]; then
     export ATD_AWS_LAMBDA_ENV="production";
 elif [[ "${CIRCLE_BRANCH}" == "master" ]]; then
     export ATD_AWS_LAMBDA_ENV="staging";
-elif [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
-    export ATD_AWS_LAMBDA_ENV="dev";
 fi;
 
 function deploy_aws_lambda {
