@@ -3,7 +3,7 @@
 #
 # By default we are going to assume the current branch will be deployed to the dev server
 #
-export ATD_AWS_LAMBDA_ENV="dev";
+export ATD_AWS_LAMBDA_ENV="staging";
 
 #
 # If this is production or staging, assign the variable accordingly.
