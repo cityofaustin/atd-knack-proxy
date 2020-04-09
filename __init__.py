@@ -16,6 +16,7 @@ parser = reqparse.RequestParser()
 parser.add_argument("x-knack-application-id", location="headers")
 parser.add_argument("x-knack-rest-api-key", location="headers")
 
+
 class Record(Resource):
     """
     Define REST endpoint
@@ -30,6 +31,11 @@ class Record(Resource):
 
         app.logger.info(data)
         args = parser.parse_args()
+
+        if args.get("x-knack-application-id") == "5815f29f7f7252cc2ca91c4f":
+            abort(
+                502, message="This service is unavailable until 10pm CT on 8 Apr 2020."
+            )
 
         app.logger.info(args)
 
