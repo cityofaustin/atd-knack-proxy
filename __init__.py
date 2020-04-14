@@ -32,11 +32,6 @@ class Record(Resource):
         app.logger.info(data)
         args = parser.parse_args()
 
-        if args.get("x-knack-application-id") == "5815f29f7f7252cc2ca91c4f":
-            abort(
-                502, message="This service is unavailable until 10pm CT on 8 Apr 2020."
-            )
-
         app.logger.info(args)
 
         res = create_record(data, obj_key, args)
