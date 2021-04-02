@@ -4,6 +4,7 @@ Restful API interface to the Knack API
 See: https://www.knack.com/developer-documentation/#the-api
 """
 import datetime
+import time
 
 from flask import Flask, request
 from flask_restful import Resource, Api, abort, reqparse
@@ -50,10 +51,11 @@ def handle_response(res):
         abort(res.status_code, message=res.text)
 
 
-def create_record(payload, obj_key, headers, max_attempts=5, timeout=60):
+def create_record(payload, obj_key, headers, max_attempts=5, timeout=90):
     """
     Submit a POST request to create a Knack record
     """
+    print("Dest object: ", obj_key)
     headers["Content-type"] = "application/json"  #  required by knack like so
     endpoint = "https://api.knack.com/v1/objects/{}/records".format(obj_key)
 
@@ -62,6 +64,8 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=60):
     while attempts < max_attempts:
 
         attempts += 1
+
+        print(f"Attempt: {attempts}")
 
         try:
             res = requests.post(
@@ -73,6 +77,7 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=60):
         except requests.exceptions.Timeout as e:
 
             if attempts < max_attempts:
+                 time.sleep(4)
                 continue
             else:
                 raise e
