@@ -50,7 +50,7 @@ def handle_response(res):
         abort(res.status_code, message=res.text)
 
 
-def create_record(payload, obj_key, headers, max_attempts=5, timeout=30):
+def create_record(payload, obj_key, headers, max_attempts=5, timeout=60):
     """
     Submit a POST request to create a Knack record
     """
