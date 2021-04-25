@@ -37,6 +37,8 @@ class Record(Resource):
 def handle_failed_request(attempts, max_attempts, status_code, message):
     app.logger.info(f"Error on attempt #{attempts}: {status_code}: {message}")
     if status_code != 408 and status_code < 500:
+        #  40x errors are returned by Knack when a request a fails validation. We should
+        #  not should not retry when this happens
         abort(status_code, message=message)
     elif attempts < max_attempts:
         time.sleep(1)
