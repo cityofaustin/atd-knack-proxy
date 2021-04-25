@@ -22,7 +22,6 @@ class Record(Resource):
     """
     Define REST endpoint
     """
-
     def post(self, obj_key):
         headers = parser.parse_args()
         payload = request.get_json()
@@ -53,7 +52,7 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=60):
     max_attempts is reached. Any other error is raised immediately.
     """
     headers["Content-type"] = "application/json"
-    endpoint = "https://api.knack.com/v1/objects/{}/records".format(obj_key)
+    endpoint = f"https://api.knack.com/v1/objects/{obj_key}/records"
     attempts = 0
 
     while True:
@@ -73,7 +72,7 @@ def create_record(payload, obj_key, headers, max_attempts=5, timeout=60):
             message = e.response.text
 
         except requests.exceptions.Timeout as e:
-            # there is no requests.Response to parse on timeouts, so we set the the
+            # there is no requests.Response to parse on timeouts, so we set the
             # response info manually
             status_code = 408
             message = "Request Timeout"
